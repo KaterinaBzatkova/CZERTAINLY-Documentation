@@ -3,80 +3,144 @@
 
 # Signing Engine Management
 
+### Signing Engine Management
 
-## Create Signing Engine instance
+
+| Method | 	Name | Description |
+| -------- | --------- | ---------------|
+| `GET` | `listSigningEngineInstances` | list all created Signing Engine Instances (uuid, name, Signature Provider, attributes) from `connector` database
+| `POST` |`createSigningEngineInstance` | add new Signing Engine (name, Signature Provider, attributes) to `connector` database
+| `GET` |`getSigningEngineInstance` | get Signing Engine Instance details (uuid, name, attributes) from `connector` database
+| `POST` |`deleteSigninEngineInstance` | delete Signing Engine Instance (uuid, name, attributes) from `connector` database
+| `POST` |`updateSigningEngineInstance` | update Signing Engine Instance (uuid, name, attributes) from `connector` database
+
+
+
+### Create Signing Engine instance
 ```plantuml
     @startuml
     autonumber
     skinparam topurl https://docs.czertainly.com/api/
         Client -> Core [[core-client-operations/#tag/v2-Client-Operations/operation/revokeCertificate]]: Create Signing Engine instance
-        Core -> Client [[connector-authority-provider-v2/#tag/Certificate-Management/operation/validateRevokeCertificateAttributes]]: List of existence of Signature Providers
+        Core -> Client [[connector-authority-provider-v2/#tag/Certificate-Management/operation/validateRevokeCertificateAttributes]]: List of existence Signature Providers
         Client -> Core [[connector-authority-provider-v2/#tag/Certificate-Management/operation/validateRevokeCertificateAttributes]]: Selected Signature Provider 
         Core -> Connector: List of Attributes request 
         Connector -> Core: List of Attributes
         Core -> Client: List of Attributes
         Client -> Core [[connector-authority-provider-v2/#tag/Certificate-Management/operation/revokeCertificate]]: Attributes
-        Core -> Connector: Create and Store Signing Server instance
-        Connector -> Connector: Create and Store Signing Server instance
-        Connector -> Core: Store Signing Server reference 
-        Core -> Client: Return Signing Server UUI
+        Core -> Connector: Create and Store a Signing Engine instance
+        Connector -> Connector: Create and Store a Signing Engine instance
+        Connector -> Core: Store Signing Engine reference 
+        Core -> Client: Return Signing Engine UUID
+    @enduml
+```
+
+### Get Signing Engine instance details
+```plantuml
+    @startuml
+    autonumber
+    skinparam topurl https://docs.czertainly.com/api/
+        Client -> Core [[core-client-operations/#tag/v2-Client-Operations/operation/revokeCertificate]]: Get a Signing Engine instance details (instance UUID)
+        Core -> Connector: Get a Signing Engine instance details 
+        Connector -> Core: Return Signing Engine instance details
+        Core -> Client: Return Signing Engine instance details
+    @enduml
+```
+
+
+### Update Signing Engine instance
+```plantuml
+    @startuml
+    autonumber
+    skinparam topurl https://docs.czertainly.com/api/
+        Client -> Core [[core-client-operations/#tag/v2-Client-Operations/operation/revokeCertificate]]: Update Signing Engine instance
+        Core -> Connector: Validate Attributes 
+        Connector -> Core: Result of Attribute validation
+        Core -> Connector: Update Signing Engine instance
+        
+        Connector -> Connector: Update Signing Engine instance
+        Connector -> Core: Update Signing Engine reference in the database
+        Core -> Client: Return Signing Engine UUID
     @enduml
 ```
 
 
 
-# Signature Porfile Management
+### Delete Signing Engine instance
+```plantuml
+    @startuml
+    autonumber
+    skinparam topurl https://docs.czertainly.com/api/
+        Client -> Core [[core-client-operations/#tag/v2-Client-Operations/operation/revokeCertificate]]: Delete Signing Engine instance
+        Core -> Core[[connector-authority-provider-v2/#tag/Certificate-Management/operation/validateRevokeCertificateAttributes]]: Check dependencies 
+        Core -> Connector: Delete Signing Engine instance
+        Connector -> Core: Return Signing Engine deletion status
+        Core -> Core: Delete Signing Engine instance reference 
+        Core -> Client: Return deletion status
+    @enduml
+```
 
 
-## Create Signature Profile
+# Signature Profile Management
+
+| Method | 	Name | Description |
+| -------- | --------- | ---------------|
+| `GET` | `listSignatureProfiles` | list all created Signature Profiles (uuid, name, format, attributes) from `connector` database
+| `POST` |`createSignatureProfile` | add new Signature Profile (name, format, attributes) to `connector` database
+| `GET` |`getSignatureProfileDetails` | get Signature Profile (uuid, name, format, attributes) from `connector` database
+| `POST` | `updateSignatureProfile` | update Signature Profile (name, format, attributes) in `connector` database
+| `DELETE` |`removeSignatureProfile` | remove Signature Profile Instance from `connector` database
+| `GET` |`listSignatureProfileAttributes` | list Signature Profile Attributes (key restrictions, workers, ...)
+| `POST` |`validateSignatureProfileAttributes` |....
+| `GET` |`connectToSigningEngine` |  connect to `Signing Engine` address???
+
+
+### Create Signature Profile
 
 ```plantuml
     @startuml
     autonumber
     skinparam topurl https://docs.czertainly.com/api/
         Client -> Core [[core-client-operations/#tag/v2-Client-Operations/operation/revokeCertificate]]: Create Signature Profile
-        Core -> Core [[connector-authority-provider-v2/#tag/Certificate-Management/operation/validateRevokeCertificateAttributes]]: Check existence of Connector
-        Core -> Core [[connector-authority-provider-v2/#tag/Certificate-Management/operation/validateRevokeCertificateAttributes]]: Check existence of Signature Profile name 
+        Core -> Core [[connector-authority-provider-v2/#tag/Certificate-Management/operation/validateRevokeCertificateAttributes]]: Check existence of Signature Profile name (duplication)
+        Core -> Client: List of Signing Engines Instances
+        Client -> Core: Selected Signing Engine Instance
+        Core -> Connector: Get Attributes 
+        Connector --> Core: List of Attributes
+        Core -> Client: List of Attributes
+        Client -> Core: Attributes
         Core -> Connector: Validate Attributes 
         Connector --> Core: Result of Attributes validation
-        Core -> Connector [[connector-authority-provider-v2/#tag/Certificate-Management/operation/revokeCertificate]]: Sign Data
-        Connector -> Connector: Register Signature Profile
-        Connector -> Core: 8 Signature Profile details 
-        Core -> Core: Store Signature Profile reference
+        Core -> Core: Store Signature Profile
         Core -> Client: Return Signature Profile UUID
     @enduml
 ```
 
-## Get Signature Profile details
+### Get Signature Profile details
 
 ```plantuml
     @startuml
     autonumber
     skinparam topurl https://docs.czertainly.com/api/
         Client -> Core [[core-client-operations/#tag/v2-Client-Operations/operation/revokeCertificate]]: Get Signature Profile details
-        Core -> Connector [[connector-authority-provider-v2/#tag/Certificate-Management/operation/validateRevokeCertificateAttributes]]: Get Signature Profile details
-        Connector --> Core: Signature Profile details
         Core -> Client: Return Signature Profile details
     @enduml
 ```
 
-## Update Signature Profile
+### Update Signature Profile
 
 ```plantuml
     @startuml
     autonumber
     skinparam topurl https://docs.czertainly.com/api/
-        Client -> Core [[core-client-operations/#tag/v2-Client-Operations/operation/revokeCertificate]]: Update Signature Profile
+        Client -> Core [[core-client-operations/#tag/v2-Client-Operations/operation/revokeCertificate]]: Update Signature Profile (Signature Profile UUID)
         Core -> Connector: Validate Attributes 
         Connector -> Core: Result of Attributes validation
-        Core -> Connector [[connector-authority-provider-v2/#tag/Certificate-Management/operation/revokeCertificate]]: Update Signature Profile
-        Connector -> Connector: Update Signature Profile Signature Profile
-        Connector -> Core: Signature Profile details
-        Core -> Core: Update Signature Profile reference
-        Core -> Client: Return Signature Profile details
+        Core -> Core: Update Signature Profile
+        Core -> Client: Return Signature Profile UUID
     @enduml
 ```
-## Remove Signature Profile
+### Remove Signature Profile
 
 ```plantuml
     @startuml
@@ -84,9 +148,7 @@
     skinparam topurl https://docs.czertainly.com/api/
         Client -> Core [[core-client-operations/#tag/v2-Client-Operations/operation/revokeCertificate]]: Remove Signature Profile
         Core -> Core: Check for dependent objects
-        Core -> Connector [[connector-authority-provider-v2/#tag/Certificate-Management/operation/validateRevokeCertificateAttributes]]: Remove Signature Profile
-        Connector -> Connector: Remove Signature Profile reference
-        Connector -> Core: Signature Profile removed
+        Core -> Core:  Remove Signature Profile from Database
         Core --> Client: Signature Profile removed
     @enduml
 ```
@@ -95,7 +157,7 @@
 
 # Signature Management
 
-## Sign Data
+### Sign Data
 
 ```plantuml
     @startuml
@@ -110,6 +172,10 @@
         Core -> Client: Return Signed Data
     @enduml
 ```
+
+### Validate Signed Data
+
+
 
 ## Table of `CORE` API
 
@@ -129,12 +195,11 @@
 
 | Method | 	Name | Description |
 | -------- | --------- | ---------------|
-| `GET` | `listSigningServer` | list all created Signing Servers Instances (uuid, name, Signature Provider, attributes) from `connector` database
-| `POST` |`createSigningServer` | add new Signing Server (name, Signature Provider, attributes) to `connector` database
-| `GET` |`getSigningServerInstance` | get Signing Server Instance details (uuid, name, attributes) from `connector` database
-| `POST` |`deleteSigningServerInstance` | delete Signing Server Instance (uuid, name, attributes) from `connector` database
-| `POST` |`updateSigningServerInstance` | update Signing Server Instance (uuid, name, attributes) from `connector` database
-
+| `GET` | `listSigningEngineInstances` | list all created Signing Engine Instances (uuid, name, Signature Provider, attributes) from `connector` database
+| `POST` |`createSigningEngineInstance` | add new Signing Engine (name, Signature Provider, attributes) to `connector` database
+| `GET` |`getSigningEngineInstance` | get Signing Engine Instance details (uuid, name, attributes) from `connector` database
+| `POST` |`deleteSigninEngineInstance` | delete Signing Engine Instance (uuid, name, attributes) from `connector` database
+| `POST` |`updateSigningEngineInstance` | update Signing Engine Instance (uuid, name, attributes) from `connector` database
 
 ### Signature Profile Management
 
