@@ -1,19 +1,47 @@
 # Signature Provider
 
-# Overview
-Signature Provider provides a framework which allows a user to sign uploaded data and verify signed data.
-# How it works
-To sign data, user must first create two entities - `Signing Engine` and `SignatureProfile`.
-`Signing Engine` handles connection to signing server, ... 
-`Signature Profile` uses `Signing Engine` and contains all logic commnon for a certain signing use case. For example, a Signature Profile 
 
+
+
+
+
+
+
+
+# Overview
+Signature Provider provides a framework which allows an user to sign uploaded data and verify a signature of signed data.
+# How it works
+
+The Signature Provider offers the capability to communicate with various types of signature technologies.
+
+For data signing, we can utilize either the technology implemented directly in Czertainly or connect to any other external technology that has its own signing implementation.
 
 
 # Provider objects
 
+Generally, a similar approach is taken for Czertainly objects as with the Provider Authority. Two types of objects are introduced: `Signing Engine` and `Signature Profile`.
+
+The `Signing Engine` stores access information related to the signing technology, such as the URL of the server where signing is performed and credentials allowing connection to the server. The specific information held by the `Signing Engine` depends on the implementation of the Signature Provider connector.
+
+
+A `Signature Profile` comprises attributes that encapsulate all the common logic necessary for a specific signing use case. Each `Signature Profile` is associated with a `Signing Engine`.
+
+As a result, Signature Profiles can be used by users and applications consistently and conveniently. They simply select the appropriate Signature Profile, upload the data to sign, and Czertainly knows all the necessary configurations for performing the signature.
+
+
+
+
 # Processes
 
-### Signing Engine Management
+The following processes are associated with the Signature Provider. 
+
+We to three processes areas:
+    - Signing Engine Management
+    - Signature Profile Management
+    - Signature Management
+
+
+# Signing Engine Management
 
 
 | Method | 	Name | Description |
