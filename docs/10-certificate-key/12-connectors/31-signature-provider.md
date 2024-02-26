@@ -1,7 +1,17 @@
 # Signature Provider
 
+# Overview
+Signature Provider provides a framework which allows a user to sign uploaded data and verify signed data.
+# How it works
+To sign data, user must first create two entities - `Signing Engine` and `SignatureProfile`.
+`Signing Engine` handles connection to signing server, ... 
+`Signature Profile` uses `Signing Engine` and contains all logic commnon for a certain signing use case. For example, a Signature Profile 
 
-# Signing Engine Management
+
+
+# Provider objects
+
+# Processes
 
 ### Signing Engine Management
 
@@ -11,8 +21,8 @@
 | `GET` | `listSigningEngineInstances` | list all created Signing Engine Instances (uuid, name, Signature Provider, attributes) from `connector` database
 | `POST` |`createSigningEngineInstance` | add new Signing Engine (name, Signature Provider, attributes) to `connector` database
 | `GET` |`getSigningEngineInstance` | get Signing Engine Instance details (uuid, name, attributes) from `connector` database
-| `POST` |`deleteSigninEngineInstance` | delete Signing Engine Instance (uuid, name, attributes) from `connector` database
-| `POST` |`updateSigningEngineInstance` | update Signing Engine Instance (uuid, name, attributes) from `connector` database
+| `DELETE` |`deleteSigninEngineInstance` | delete Signing Engine Instance (uuid, name, attributes) from `connector` database
+| `PUT` |`updateSigningEngineInstance` | update Signing Engine Instance (uuid, name, attributes) from `connector` database
 
 
 
@@ -88,7 +98,7 @@
 | `GET` | `listSignatureProfiles` | list all created Signature Profiles (uuid, name, format, attributes) from `connector` database
 | `POST` |`createSignatureProfile` | add new Signature Profile (name, format, attributes) to `connector` database
 | `GET` |`getSignatureProfileDetails` | get Signature Profile (uuid, name, format, attributes) from `connector` database
-| `POST` | `updateSignatureProfile` | update Signature Profile (name, format, attributes) in `connector` database
+| `PUT` | `updateSignatureProfile` | update Signature Profile (name, format, attributes) in `connector` database
 | `DELETE` |`removeSignatureProfile` | remove Signature Profile Instance from `connector` database
 | `GET` |`listSignatureProfileAttributes` | list Signature Profile Attributes (key restrictions, workers, ...)
 | `POST` |`validateSignatureProfileAttributes` |....
@@ -175,6 +185,18 @@
 
 ### Validate Signed Data
 
+```plantuml
+    @startuml
+    autonumber
+    skinparam topurl https://docs.czertainly.com/api/
+        Client -> Core [[core-client-operations/#tag/v2-Client-Operations/operation/revokeCertificate]]: Signed Data to Validate
+        Core -> Connector [[connector-authority-provider-v2/#tag/Certificate-Management/operation/validateRevokeCertificateAttributes]]: Validate format of Data to Sign
+        Connector -> Core: Result of Attributes validation
+        Core -> Connector [[connector-authority-provider-v2/#tag/Certificate-Management/operation/revokeCertificate]]: Validate Data
+        Connector -> Core: Return Validation Result
+        Core -> Client: Return Validation Result
+    @enduml
+```
 
 
 ## Table of `CORE` API
@@ -220,6 +242,6 @@
 | Method | 	Name | Description |
 | -------- | --------- | ---------------|
 |`POST` |`signData` | return signed data
-|`GET` |`getSignatureAttributes` | return signature attributes specific for each connector (Czertainly Signing, SignServer, SEFIRA)
+|`GET` |`getSignatureAttributes` | return signature attributes specific for each connector
 
 
