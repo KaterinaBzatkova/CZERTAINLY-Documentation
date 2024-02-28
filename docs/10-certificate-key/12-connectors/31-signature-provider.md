@@ -2,12 +2,6 @@
 
 
 
-
-
-
-
-
-
 # Overview
 Signature Provider provides a framework which allows an user to sign uploaded data and verify a signature of signed data.
 # How it works
@@ -41,29 +35,15 @@ We to three processes areas:
     - Signature Management
 
 
+
 # Signing Engine Management
-
-
-| Method | 	Name | Description |
-| -------- | --------- | ---------------|
-| `GET` | `listSigningEngineInstances` | list all created Signing Engine Instances (uuid, name, Signature Provider, attributes) from `connector` database
-| `POST` |`createSigningEngineInstance` | add new Signing Engine (name, Signature Provider, attributes) to `connector` database
-| `GET` |`getSigningEngineInstance` | get Signing Engine Instance details (uuid, name, attributes) from `connector` database
-| `DELETE` |`deleteSigninEngineInstance` | delete Signing Engine Instance (uuid, name, attributes) from `connector` database
-| `PUT` |`updateSigningEngineInstance` | update Signing Engine Instance (uuid, name, attributes) from `connector` database
-| `GET` |`checkSigningEngineConnection` |  check status of `Signing Engine` connection
-
-
-
 
 ### Create Signing Engine instance
 ```plantuml
     @startuml
     autonumber
     skinparam topurl https://docs.czertainly.com/api/
-        Client -> Core [[core-client-operations/#tag/v2-Client-Operations/operation/revokeCertificate]]: Create Signing Engine instance
-        Core -> Client [[connector-authority-provider-v2/#tag/Certificate-Management/operation/validateRevokeCertificateAttributes]]: List of existence Signature Providers
-        Client -> Core [[connector-authority-provider-v2/#tag/Certificate-Management/operation/validateRevokeCertificateAttributes]]: Selected Signature Provider 
+        Client -> Core : Create Signing Engine instance
         Core -> Connector: List of Attributes request 
         Connector -> Core: List of Attributes
         Core -> Client: List of Attributes
@@ -74,6 +54,7 @@ We to three processes areas:
         Core -> Client: Return Signing Engine UUID
     @enduml
 ```
+
 
 ### Get Signing Engine instance details
 ```plantuml
@@ -122,15 +103,6 @@ We to three processes areas:
 
 
 # Signature Profile Management
-
-| Method | 	Name | Description |
-| -------- | --------- | ---------------|
-| `GET` | `listSignatureProfiles` | list all created Signature Profiles (uuid, name, format, attributes) from `connector` database
-| `POST` |`createSignatureProfile` | add new Signature Profile (name, format, attributes) to `connector` database
-| `GET` |`getSignatureProfileDetails` | get Signature Profile (uuid, name, format, attributes) from `connector` database
-| `PUT` | `updateSignatureProfile` | update Signature Profile (name, format, attributes) in `connector` database
-| `DELETE` |`removeSignatureProfile` | remove Signature Profile Instance from `connector` database
-| `GET` |`listSignatureProfileAttributes` | list Signature Profile Attributes (key restrictions, workers, ...)
 
 
 ### Create Signature Profile
@@ -184,7 +156,7 @@ We to three processes areas:
     @startuml
     autonumber
     skinparam topurl https://docs.czertainly.com/api/
-        Client -> Core [[core-client-operations/#tag/v2-Client-Operations/operation/revokeCertificate]]: Remove Signature Profile
+        Client -> Core : Remove Signature Profile
         Core -> Core: Check for dependent objects
         Core -> Core:  Remove Signature Profile from Database
         Core --> Client: Signature Profile removed
@@ -201,7 +173,9 @@ We to three processes areas:
     @startuml
     autonumber
     skinparam topurl https://docs.czertainly.com/api/
-        Client -> Core [[core-client-operations/#tag/v2-Client-Operations/operation/revokeCertificate]]: Data to Sign
+        Client -> Core [[core-client-operations/#tag/v2-Client-Operations/operation/revokeCertificate]]: Sign Data
+        Core -> Client: List of Signature Profiles
+        Client -> Core: Selected Signature Profile
         Core -> Connector [[connector-authority-provider-v2/#tag/Certificate-Management/operation/validateRevokeCertificateAttributes]]: Validate format of Data to Sign
         Connector -> Core: Result of Attributes validation
         Core -> Connector [[connector-authority-provider-v2/#tag/Certificate-Management/operation/revokeCertificate]]: Sign Data
@@ -229,15 +203,45 @@ We to three processes areas:
 
 ## Table of `CORE` API
 
+The following tables summarize the APIs that are implemented for communication with the core.
+
+### Signing Engine Management
 
 | Method | 	Name | Description |
 | -------- | --------- | ---------------|
-| `GET`| `listSignatureProfiles` | List all available (created) Signature Profiles, find in `core` database 
-|`POST` |`createSignatureProfile` | Add new Signature Profile (only reference without Signature profile attributes) to `core` database
+| `GET` | `listSigningEngineInstances` | list all created Signing Engine Instances (uuid, name, Signature Provider, attributes) from `core` database
+| `POST` |`createSigningEngineInstance` | add new Signing Engine (name, Signature Provider, attributes) to `core` database
+| `GET` |`getSigningEngineInstance` | get Signing Engine Instance details (uuid, name, attributes) from `core` database
+| `POST` |`deleteSigninEngineInstance` | delete Signing Engine Instance (uuid, name, attributes) from `core` database
+| `POST` |`updateSigningEngineInstance` | update Signing Engine Instance (uuid, name, attributes) from `core` database
 
+
+
+### Signature Profile Management
+
+| Method | 	Name | Description |
+| -------- | --------- | ---------------|
+| `GET` | `listSignatureProfiles` | list all created Signature Profiles (uuid, name, format, attributes) from `connector` database
+| `POST` |`createSignatureProfile` | add new Signature Profile (name, format, attributes) to `connector` database
+| `GET` |`getSignatureProfileInstance` | get Signature Profile (uuid, name, format, attributes) from `connector` database
+| `POST` | `updateSignatureProfile` | update Signature Profile (name, format, attributes) in `connector` database
+| `DELETE` |`removeSignatureProfileInstance` | remove Signature Profile Instance from `connector` database
+| `GET` |`listSignatureProfileAttributes` | list Signature Profile Attributes (key restrictions, workers, ...)
+| `POST` |`validateAttributes` |
+| `GET` |`connectToSigningServer` |  connect to `Signing Server` address???
+
+
+### Signature Management
+
+| Method | 	Name | Description |
+| -------- | --------- | ---------------|
+|`POST` |`signData` | return signed data
+|`POST` |`validateSignature` | validate Signature of the signed data
 
 
 ## Table of `Signature Provider` API
+
+The following tables summarize the APIs that are implemented for communication with the `Signature Provider` connector.
 
 
 ### Signing Engine Management
@@ -270,6 +274,6 @@ We to three processes areas:
 | Method | 	Name | Description |
 | -------- | --------- | ---------------|
 |`POST` |`signData` | return signed data
-|`GET` |`getSignatureAttributes` | return signature attributes specific for each connector
+|`POST` |`validateSignature` | validate Signature of the signed data
 
 
