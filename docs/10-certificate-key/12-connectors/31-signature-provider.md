@@ -51,6 +51,8 @@ We to three processes areas:
 | `GET` |`getSigningEngineInstance` | get Signing Engine Instance details (uuid, name, attributes) from `connector` database
 | `DELETE` |`deleteSigninEngineInstance` | delete Signing Engine Instance (uuid, name, attributes) from `connector` database
 | `PUT` |`updateSigningEngineInstance` | update Signing Engine Instance (uuid, name, attributes) from `connector` database
+| `GET` |`checkSigningEngineConnection` |  check status of `Signing Engine` connection
+
 
 
 
@@ -129,8 +131,6 @@ We to three processes areas:
 | `PUT` | `updateSignatureProfile` | update Signature Profile (name, format, attributes) in `connector` database
 | `DELETE` |`removeSignatureProfile` | remove Signature Profile Instance from `connector` database
 | `GET` |`listSignatureProfileAttributes` | list Signature Profile Attributes (key restrictions, workers, ...)
-| `POST` |`validateSignatureProfileAttributes` |....
-| `GET` |`connectToSigningEngine` |  connect to `Signing Engine` address???
 
 
 ### Create Signature Profile
