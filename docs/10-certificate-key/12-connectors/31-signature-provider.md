@@ -4,11 +4,13 @@
 
 # Overview
 Signature Provider provides a framework which allows an user to sign uploaded data and verify a signature of signed data.
+
 # How it works
 
 The Signature Provider offers the capability to communicate with various types of signature technologies.
 
 For data signing, we can utilize either the technology implemented directly in Czertainly or connect to any other external technology that has its own signing implementation.
+
 
 
 # Provider objects
@@ -21,6 +23,8 @@ The `Signing Engine` stores access information related to the signing technology
 A `Signature Profile` comprises attributes that encapsulate all the common logic necessary for a specific signing use case. Each `Signature Profile` is associated with a `Signing Engine`.
 
 As a result, Signature Profiles can be used by users and applications consistently and conveniently. They simply select the appropriate Signature Profile, upload the data to sign, and Czertainly knows all the necessary configurations for performing the signature.
+
+Signing process also compromises of storing `Signed Data` in Core inventory. Signing process will not always return signed data immediately, user can prepare signed data together with signature attributes for later signing (for example, signing will first need to be approved by administrator) and then the signed data can be retrieved from inventory. 
 
 
 
