@@ -78,27 +78,41 @@ Attributes are important for Core to communicate with connector. The attributes 
 
 ### Signing Engine Attributes
 Signing Engine attributes should allow acces to server where the signing will happen, so they will typically look like this:
- - Signing Engine URL
- - Credentials
+- **Signing Engine name**
+- **Signing Engine description**
+ - **Signing Engine URL**
+ - **Credentials**
 
 
 ### Signature Profile Attributes
 Each Signature Profile attributes contain settings which will be common for all signatures created using the Signature Profile, which could be:
-- **Format** of data to sign: **PDF, XML, CODE, JSON**  
-- **SIGNATURE_LEVEL**: **PAdES-Baseline-B,...**
-- **signing certificate attributes**, **CA certificate requirement**
+
+- **Signature Profile name**
+- **Signature Profile description**
+- **Signature Engine uuid**
+- **Signature format** (ENUM: PAdES, XAdES, CAdES, JAdES, ASIC)
+- **Signature level** (ENUM: Baseline-B, Baseline-T, Baseline-LT, Baseline-LTA)
+- **Signature algorithm** (ENUM: RSAwithSHA256,....)
 - **key restrictions**
-	 - enable `one-time signing/ static private key/ both` 
-	 - **key length**
-   - **key type**
-- **DIGEST ALGORITHM** : SHA256
+	 - (ENUM: one-time signing/ static private key) 
+	 - note: key type is restricited by Signature algorithm
+
 
 ### Signing Processs Attributes
 Each Signing Process has attributes contain settings for a specific signature instance, such as:
 - **signing key** (based on Signature Profile configuration):
     - **existing key** - for signature with **static private key**
     - **generate a new key** - for **one time signing** or **static private key**
+- **Signing certificate**
+- **Data to Be Signed**
 
+
+
+### Verification Processs Attributes
+- **Data to be verify**
+- **Verification level**
+- **Verification report**
+- Optional: Validation Data, Date, Policy,... 
 
 # Processes
 
