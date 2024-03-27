@@ -92,13 +92,14 @@ Each Signature Profile attributes contain settings which will be common for all 
 - **Signature Engine uuid**
 - **Signature format** (ENUM: PAdES, XAdES, CAdES, JAdES, ASIC)
 - **Signature level** (ENUM: Baseline-B, Baseline-T, Baseline-LT, Baseline-LTA)
+- **Packaging Options** (ENUM : Envelopd, Enveloping, Detached, Internally detached)
 - **Signature algorithm** (ENUM: RSAwithSHA256,....)
 - **key restrictions**
 	 - (ENUM: one-time signing/ static private key) 
 	 - note: key type is restricited by Signature algorithm
 
 
-### Signing Processs Attributes
+### Signing Process Attributes
 Each Signing Process has attributes contain settings for a specific signature instance, such as:
 - **signing key** (based on Signature Profile configuration):
     - **existing key** - for signature with **static private key**
@@ -108,7 +109,7 @@ Each Signing Process has attributes contain settings for a specific signature in
 
 
 
-### Verification Processs Attributes
+### Verification Process Attributes
 - **Data to be verify**
 - **Verification level**
 - **Verification report**
